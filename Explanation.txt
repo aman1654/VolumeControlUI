@@ -1,0 +1,18 @@
+ApplicationWindow: The main window of the application.
+
+Properties:
+
+volume: Holds the current volume level.
+previousVolume: Stores the previous volume before muting.
+isMuted: Indicates whether the volume is muted.
+volumeStep: The step size for increasing or decreasing the volume.
+Rectangle: Represents the volume bar container. The inner Rectangle changes width based on the volume property, creating a visual representation of the volume level.
+
+Text: Displays the current volume percentage or "Muted" if muted.
+
+FocusScope: Captures keyboard events for volume control. It includes methods to increase, decrease, and toggle mute status:
+
+increaseVolume(): Increases the volume by volumeStep but does not exceed 100.
+decreaseVolume(): Decreases the volume by volumeStep but does not go below 0.
+toggleMute(): Mutes or unmutes the volume, toggling between the volume and previousVolume states.
+Keys.onPressed: Handles the key press events for the up arrow, down arrow, and delete keys to control the volume.
