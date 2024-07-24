@@ -1,0 +1,82 @@
+import QtQuick 2.12
+import QtQuick.Controls 2.12
+
+ApplicationWindow {
+    visible: true
+    width: 400
+    height: 200
+    title: "Volume Control"
+
+    // Initial volume level and mute state
+    property int volume: 50
+    property int previousVolume: volume
+    property bool isMuted: false
+
+    // Volume increase/decrease step
+    property int volumeStep: 5
+
+    Rectangle {
+        anchors.centerIn: parent
+        width: parent.width * 0.8
+        height: 40
+        border.color: "black"
+        border.width: 1
+        radius: 5
+
+        Rectangle {
+            width: parent.width * (volume / 100)
+            height: parent.height
+            color: "lightblue"
+            radius: 5
+        }
+    }
+
+    Text {
+        text: "Volume: " + (isMuted ? "Muted" : volume + "%")
+        anchors.horizontalCenter: parent.horizontalCenter
+        anchors.top: parent.top
+        anchors.topMargin: 20
+        font.pointSize: 20
+    }
+
+    FocusScope {
+        id: volumeControl
+        focus: true
+        Keys.onUpPressed: increaseVolume()
+        Keys.onDownPressed: decreaseVolume()
+        Keys.onDeletePressed: toggleMute()
+
+        function increaseVolume() {
+            if (!isMuted && volume < 100) {
+                volume = Math.min(volume + volumeStep, 100)
+            }
+        }
+
+        function decreaseVolume() {
+            if (!isMuted && volume > 0) {
+                volume = Math.max(volume - volumeStep, 0)
+            }
+        }
+
+        function toggleMute() {
+            if (isMuted) {
+                isMuted = false
+                volume = previousVolume
+            } else {
+                isMuted = true
+                previousVolume = volume
+                volume = 0
+            }
+        }
+
+        Keys.onPressed: {
+            if (event.key === Qt.Key_Up) {
+                increaseVolume()
+            } else if (event.key === Qt.Key_Down) {
+                decreaseVolume()
+            } else if (event.key === Qt.Key_Delete) {
+                toggleMute()
+            }
+        }
+    }
+}
